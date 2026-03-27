@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — Mumbai Jan Seva</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body class="auth-page">
+  <div class="auth-split">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="brand-emblem">🏛</div>
+        <h1>Mumbai Jan Seva</h1>
+        <p>Register as a citizen to submit and track your civic complaints.</p>
+      </div>
+      <div class="auth-govt-tag">Government of Maharashtra Initiative</div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="auth-sub">Register with your details</p>
+        {% if error %}<div class="alert-error">{{ error }}</div>{% endif %}
+        <form method="POST">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Satyabrata Nayak" required/>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="you@example.com" required/>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Min. 6 characters" required/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX"/>
+            </div>
+            <div class="form-group">
+              <label>Ward / Area</label>
+              <select name="ward">
+                <option value="">Select ward</option>
+                <option>Ward 1 – Panvel</option>
+                <option>Ward 2 – Kharghar</option>
+                <option>Ward 3 – Vashi</option>
+                <option>Ward 4 – Belapur</option>
+                <option>Ward 5 – Nerul</option>
+                <option>Ward 6 – Airoli</option>
+                <option>Ward 7 – Ghansoli</option>
+                <option>Ward 8 – Kopar Khairane</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary full">Register</button>
+        </form>
+        <div class="auth-divider">Already have an account?</div>
+        <a href="/" class="btn-outline full">Sign In</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

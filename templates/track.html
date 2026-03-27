@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Track Complaint — Jan Seva{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Track Complaint</h1>
+    <p>Enter your ticket number to check status</p>
+  </div>
+</div>
+
+<div class="track-layout">
+  <div class="track-search-card">
+    <form method="POST">
+      <div class="form-group">
+        <label>Ticket Number</label>
+        <div class="track-input-row">
+          <input type="text" name="ticket" placeholder="e.g. TKT-0001" value="{{ ticket }}" required style="text-transform:uppercase;font-family:'IBM Plex Mono',monospace;"/>
+          <button type="submit" class="btn-primary">Track</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% if ticket and not complaint %}
+  <div class="alert-error" style="margin-top:20px;">No complaint found for ticket <strong>{{ ticket }}</strong>. Please check and try again.</div>
+  {% endif %}
+
+  {% if complaint %}
+  <div class="track-result">
+    <div class="track-header">
+      <div>
+        <code class="ticket-code-lg">{{ complaint.ticket }}</code>
+        <div class="track-category">{{ complaint.category }}</div>
+      </div>
+      <span class="status-badge status-{{ complaint.status|lower|replace(' ','-') }} status-lg">{{ complaint.status }}</span>
+    </div>
+
+    <div class="track-grid">
+      <div class="track-detail">
+        <div class="track-label">Submitted By</div>
+        <div class="track-value">{{ complaint.name }}</div>
+      </div>
+      <div class="track-detail">
+        <div class="track-label">Location</div>
+        <div class="track-value">{{ complaint.location }}</div>
+      </div>
+      <div class="track-detail">
+        <div class="track-label">Ward</div>
+        <div class="track-value">{{ complaint.ward }}</div>
+      </div>
+      <div class="track-detail">
+        <div class="track-label">Date Submitted</div>
+        <div class="track-value">{{ complaint.created_at }}</div>
+      </div>
+      <div class="track-detail" style="grid-column:1/-1;">
+        <div class="track-label">Description</div>
+        <div class="track-value">{{ complaint.description }}</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-title">Progress</div>
+      {% set stages = ['Submitted', 'Under Review', 'In Progress', 'Resolved'] %}
+      {% for stage in stages %}
+      {% set is_done = (complaint.status == 'Resolved') or
+                       (complaint.status == 'In Progress' and stage in ['Submitted','Under Review','In Progress']) or
+                       (complaint.status == 'Under Review' and stage in ['Submitted','Under Review']) or
+                       (complaint.status == 'Submitted' and stage == 'Submitted') %}
+      <div class="timeline-step {% if is_done %}done{% endif %} {% if complaint.status == stage %}current{% endif %}">
+        <div class="timeline-dot"></div>
+        <div class="timeline-label">{{ stage }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

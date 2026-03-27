@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Mumbai Jan Seva{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% if session.user %}
+  <nav class="nav">
+    <div class="nav-left">
+      <div class="nav-logo">
+        <span class="logo-emblem">🏛</span>
+        <div>
+          <div class="logo-title">Mumbai Jan Seva</div>
+          <div class="logo-sub">Citizen Grievance Portal</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-links">
+      {% if session.user.role == 'admin' %}
+        <a href="/admin" class="{% if request.path == '/admin' %}active{% endif %}">Dashboard</a>
+      {% else %}
+        <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">My Complaints</a>
+        <a href="/submit"    class="{% if request.path == '/submit' %}active{% endif %}">New Complaint</a>
+        <a href="/track"     class="{% if request.path == '/track' %}active{% endif %}">Track</a>
+        <a href="/map"       class="{% if request.path == '/map' %}active{% endif %}">Map</a>
+      {% endif %}
+    </div>
+    <div class="nav-right">
+      <span class="nav-user">{{ session.user.name }}</span>
+      <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+  </nav>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="footer">
+    <div>🏛 Mumbai Jan Seva · Citizen Grievance Redressal Portal · Maharashtra Government</div>
+    <div style="opacity:0.5;font-size:11px;margin-top:4px;">Built by Satyabrata Nayak · RAIT, Navi Mumbai</div>
+  </footer>
+</body>
+</html>

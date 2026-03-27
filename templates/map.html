@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Complaint Map — Jan Seva{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Complaint Map</h1>
+    <p>Live view of all active complaints across Navi Mumbai</p>
+  </div>
+</div>
+<div class="map-page-wrap">
+  <div id="mapFull"></div>
+  <div class="map-legend">
+    <div class="legend-title">Status</div>
+    <div class="legend-item"><span class="dot dot-submitted"></span> Submitted</div>
+    <div class="legend-item"><span class="dot dot-review"></span> Under Review</div>
+    <div class="legend-item"><span class="dot dot-progress"></span> In Progress</div>
+    <div class="legend-item"><span class="dot dot-resolved"></span> Resolved</div>
+  </div>
+</div>
+<script>
+  const complaints = {{ complaints_json | tojson }};
+  const map = L.map('mapFull').setView([19.04, 73.02], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+  const colors = { 'Submitted':'#E85D26','Under Review':'#F0A500','In Progress':'#1A7CC2','Resolved':'#2D9E5F' };
+  complaints.forEach(c => {
+    const color = colors[c.status] || '#888';
+    const circle = L.circleMarker([c.lat, c.lng], { radius:10, fillColor:color, color:'white', weight:2, fillOpacity:0.9 });
+    circle.bindPopup(`<strong>${c.ticket}</strong><br/>${c.category}<br/>${c.location}<br/><span style="color:${color};font-weight:600;">${c.status}</span>`);
+    circle.addTo(map);
+  });
+</script>
+{% endblock %}

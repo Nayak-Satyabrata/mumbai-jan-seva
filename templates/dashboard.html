@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}My Complaints — Jan Seva{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Welcome, {{ user.name }}</h1>
+    <p>Track and manage your civic complaints</p>
+  </div>
+  <a href="/submit" class="btn-primary">+ New Complaint</a>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-num">{{ complaints|length }}</div>
+    <div class="stat-label">Total Submitted</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">{{ complaints|selectattr('status','eq','Resolved')|list|length }}</div>
+    <div class="stat-label">Resolved</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">{{ complaints|selectattr('status','eq','In Progress')|list|length }}</div>
+    <div class="stat-label">In Progress</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">{{ complaints|selectattr('status','eq','Submitted')|list|length }}</div>
+    <div class="stat-label">Pending</div>
+  </div>
+</div>
+
+{% if complaints %}
+<div class="table-card">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Ticket</th><th>Category</th><th>Location</th><th>Date</th><th>Status</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in complaints %}
+      <tr>
+        <td><code class="ticket-code">{{ c.ticket }}</code></td>
+        <td>{{ c.category }}</td>
+        <td>{{ c.location }}</td>
+        <td>{{ c.created_at }}</td>
+        <td><span class="status-badge status-{{ c.status|lower|replace(' ','-') }}">{{ c.status }}</span></td>
+        <td><a href="/track?ticket={{ c.ticket }}" class="link-btn">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📋</div>
+  <h3>No complaints yet</h3>
+  <p>Submit your first civic complaint and we'll route it to the right official.</p>
+  <a href="/submit" class="btn-primary">Submit a Complaint</a>
+</div>
+{% endif %}
+{% endblock %}

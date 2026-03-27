@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — Jan Seva{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Admin Dashboard</h1>
+    <p>Manage and resolve citizen complaints</p>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card"><div class="stat-num">{{ stats.total }}</div><div class="stat-label">Total</div></div>
+  <div class="stat-card accent-orange"><div class="stat-num">{{ stats.submitted }}</div><div class="stat-label">Pending</div></div>
+  <div class="stat-card accent-blue"><div class="stat-num">{{ stats.in_progress }}</div><div class="stat-label">In Progress</div></div>
+  <div class="stat-card accent-green"><div class="stat-num">{{ stats.resolved }}</div><div class="stat-label">Resolved</div></div>
+</div>
+
+<div class="table-card">
+  <div class="table-toolbar">
+    <input type="text" id="searchBox" placeholder="Search complaints..." oninput="filterTable()" class="table-search"/>
+  </div>
+  <table class="data-table" id="adminTable">
+    <thead>
+      <tr>
+        <th>Ticket</th><th>Citizen</th><th>Category</th><th>Location</th><th>Ward</th><th>Date</th><th>Status</th><th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in complaints %}
+      <tr>
+        <td><code class="ticket-code">{{ c.ticket }}</code></td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.category }}</td>
+        <td>{{ c.location }}</td>
+        <td>{{ c.ward }}</td>
+        <td>{{ c.created_at }}</td>
+        <td><span class="status-badge status-{{ c.status|lower|replace(' ','-') }}">{{ c.status }}</span></td>
+        <td>
+          <form method="POST" action="/admin/update/{{ c.ticket }}" style="display:flex;gap:6px;">
+            <select name="status" class="inline-select">
+              {% for s in ['Submitted','Under Review','In Progress','Resolved'] %}
+              <option {% if c.status == s %}selected{% endif %}>{{ s }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn-sm">Save</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+function filterTable() {
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  document.querySelectorAll('#adminTable tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

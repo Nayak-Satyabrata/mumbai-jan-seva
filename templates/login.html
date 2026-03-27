@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Mumbai Jan Seva</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body class="auth-page">
+  <div class="auth-split">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="brand-emblem">🏛</div>
+        <h1>Mumbai Jan Seva</h1>
+        <p>Citizen Grievance Redressal Portal</p>
+        <div class="auth-features">
+          <div class="auth-feat">✅ Submit civic complaints directly to officials</div>
+          <div class="auth-feat">📍 Location-based ward routing</div>
+          <div class="auth-feat">🔎 Real-time complaint tracking</div>
+          <div class="auth-feat">🗺 Live complaint map</div>
+        </div>
+      </div>
+      <div class="auth-govt-tag">Government of Maharashtra Initiative</div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-card">
+        <h2>Sign In</h2>
+        <p class="auth-sub">Access your Jan Seva account</p>
+        {% if error %}<div class="alert-error">{{ error }}</div>{% endif %}
+        <form method="POST">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="you@example.com" required/>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="••••••••" required/>
+          </div>
+          <button type="submit" class="btn-primary full">Sign In</button>
+        </form>
+        <div class="auth-divider">or</div>
+        <a href="/register" class="btn-outline full">Create New Account</a>
+        <div class="demo-box">
+          <div class="demo-title">Demo Credentials</div>
+          <div class="demo-row"><span>Citizen:</span> <code>citizen@test.com / test123</code></div>
+          <div class="demo-row"><span>Admin:</span> <code>admin@janseva.gov.in / admin123</code></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
