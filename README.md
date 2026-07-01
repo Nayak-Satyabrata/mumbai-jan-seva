@@ -66,9 +66,6 @@ Open your browser at **http://127.0.0.1:5000**
 | Citizen | Register a new account | — |
 | Admin | admin@janseva.gov.in | admin123 |
 
-## 📸 Screenshots
-
-> *(Add screenshots here)*
 
 ## 🔮 Planned Improvements
 
